@@ -89,5 +89,69 @@ namespace NZWalks.API.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
         }
+
+        // Update region
+        // PUT
+        [HttpPut]
+        [Route("{id:guid}")]
+        public IActionResult Update([FromRoute]Guid id, [FromBody]UpdateRegionRequestDto updateRegionRequestDto)
+        {
+            var regionDomainModel = dbContext.Regions.FirstOrDefault(r =>  r.Id == id);
+            if (regionDomainModel == null)
+            {
+                return NotFound();
+            }
+
+            // Map DTO to Domain model
+            regionDomainModel.Code = updateRegionRequestDto.Code;
+            regionDomainModel.Name = updateRegionRequestDto.Name;
+            regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
+
+            dbContext.SaveChanges();
+
+            // Convert domain model to dto
+            var regionDto = new RegionDto
+            {
+                Id = regionDomainModel.Id,
+                Code = regionDomainModel.Code,
+                Name = regionDomainModel.Name,
+                RegionImageUrl = regionDomainModel.RegionImageUrl,
+            };
+
+            return Ok(regionDto);
+        }
+
+        // Delete Region
+        // DELETE:
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var regionDomain = dbContext.Regions.FirstOrDefault(r => r.Id == id);
+            if (regionDomain == null)
+            {
+                return NotFound();
+            }
+
+            // Delete Region
+            dbContext.Regions.Remove(regionDomain);
+            int result = dbContext.SaveChanges();
+
+            if (result == 0)
+            {
+                return BadRequest();
+            }
+
+            var regionDto = new RegionDto
+            {
+                Id = regionDomain.Id,
+                Code = regionDomain.Code,
+                Name = regionDomain.Name,
+                RegionImageUrl = regionDomain.RegionImageUrl,
+            };
+
+            // return Ok(); or
+            return Ok(regionDto);
+        }
     }
 }
