@@ -22,6 +22,16 @@ namespace NZWalks.API.Repositories
             return savedWalk;
         }
 
+        public async Task<Walk?> DeleteWalkAsync(Guid id)
+        {
+            var existingWalk = await dbContext.Walks.FirstOrDefaultAsync(w => w.Id == id);
+            if (existingWalk == null)
+                return null;
+            dbContext.Walks.Remove(existingWalk);
+            await dbContext.SaveChangesAsync();
+            return existingWalk;
+        }
+
         public async Task<List<Walk>?> GetAllWalksAsync()
         {
             var walks = await dbContext.Walks
@@ -38,6 +48,23 @@ namespace NZWalks.API.Repositories
                 .Include(nameof(Region))
                 .FirstOrDefaultAsync(w => w.Id == id);
             return walk;
+        }
+
+        public async Task<Walk?> UpdateWalkAsync(Walk walk)
+        {
+            var existingWalk = await dbContext.Walks.FirstOrDefaultAsync(w => w.Id == walk.Id);
+            if (existingWalk == null)
+                return null;
+
+            existingWalk.Name = walk.Name;
+            existingWalk.LengthInKm = walk.LengthInKm;
+            existingWalk.Description = walk.Description;
+            existingWalk.DifficultyId = walk.DifficultyId;
+            existingWalk.RegionId = walk.RegionId;
+            existingWalk.WalkImageUrl = walk.WalkImageUrl;
+
+            await dbContext.SaveChangesAsync();
+            return existingWalk;
         }
     }
 }
