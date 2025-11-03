@@ -79,6 +79,8 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]AddRegionRequestDto addRegionRequestDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
             // Map or convert DTO to Domain model
             //var regionDomainModel = new Region
             //{
@@ -121,6 +123,9 @@ namespace NZWalks.API.Controllers
             //    Name = updateRegionRequestDto.Name,
             //    RegionImageUrl = updateRegionRequestDto.RegionImageUrl,
             //};
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             var regionDomainModel = mapper.Map<Region>(updateRegionRequestDto);
             regionDomainModel = await regionRepository.UpdateAsync(id, regionDomainModel);
