@@ -11,7 +11,7 @@ using NZWalks.API.Data;
 
 namespace NZWalks.API.Migrations
 {
-    [DbContext(typeof(NZWalkDbContext))]
+    [DbContext(typeof(NZWalksDbContext))]
     [Migration("20251101003523_Seeding data for Difficulties and Regions")]
     partial class SeedingdataforDifficultiesandRegions
     {

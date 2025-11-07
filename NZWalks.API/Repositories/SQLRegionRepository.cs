@@ -6,11 +6,11 @@ namespace NZWalks.API.Repositories
 {
     public class SQLRegionRepository : IRegionRepository
     {
-        private readonly NZWalkDbContext dbContext;
+        private readonly NZWalksDbContext dbContext;
 
-        public SQLRegionRepository(NZWalkDbContext nZWalkDbContext)
+        public SQLRegionRepository(NZWalksDbContext nZWalksDbContext)
         {
-            this.dbContext = nZWalkDbContext;
+            this.dbContext = nZWalksDbContext;
         }
 
         public async Task<Region> CreateAsync(Region region)
