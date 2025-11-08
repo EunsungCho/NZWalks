@@ -46,6 +46,10 @@ namespace NZWalks.API.Controllers
         {
             var walksDomain = await walkRepository.GetAllWalksAsync(filterOn, filterQuery, sortBy, isAscending ?? true,
                 pageNumber, pageSize);
+
+            // Create an exception for test
+            throw new Exception("This is a test exception.");
+
             var walksDto = mapper.Map<List<WalkDto>>(walksDomain);
             if (walksDto == null)
                 return NotFound();
